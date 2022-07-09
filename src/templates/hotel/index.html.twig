@@ -10,12 +10,14 @@
         <input type="text" name="q" value="{{ q|default("") }}"/>
         <input type="submit" value="search"/>
     </form>
-    <table class="table">
+    <table class="table" id="hotel-table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
                 <th>Address</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -25,6 +27,8 @@
                 <td>{{ hotel.id }}</td>
                 <td>{{ hotel.name }}</td>
                 <td>{{ hotel.address }}</td>
+                <td>{{ hotel.createdAt ? hotel.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ hotel.updatedAt ? hotel.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_hotel_show', {'id': hotel.id}) }}">show</a>
                     <a href="{{ path('app_hotel_edit', {'id': hotel.id}) }}">edit</a>

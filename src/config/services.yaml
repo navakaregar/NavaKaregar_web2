@@ -28,6 +28,13 @@ services:
         arguments: ["@request_stack"]
         tags:
             - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
-
+    App\Listener\TimeLoggerListener:
+        tags:
+            - {name: doctrine.event_listener, event: prePersist}
+            - {name: doctrine.event_listener, event: preUpdate}
+    App\Listener\UserLoggerListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
