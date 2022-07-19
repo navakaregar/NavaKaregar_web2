@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Model\OwnerInterface;
 use App\Model\TimeLoggerInterface;
 use App\Model\TimeLoggerTrait;
 use App\Model\UserLoggerInterface;
@@ -15,7 +16,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: HotelRepository::class)]
 #[Gedmo\SoftDeleteable(fieldName: "deletedAt")]
-class Hotel implements TimeLoggerInterface, UserLoggerInterface
+class Hotel implements TimeLoggerInterface, UserLoggerInterface, OwnerInterface
 {
 
     use TimeLoggerTrait;
@@ -37,6 +38,9 @@ class Hotel implements TimeLoggerInterface, UserLoggerInterface
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'hotels')]
+    private $manager;
 
     public function __construct()
     {
@@ -116,6 +120,18 @@ class Hotel implements TimeLoggerInterface, UserLoggerInterface
                 $room->setHotel(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getManager(): ?User
+    {
+        return $this->manager;
+    }
+
+    public function setManager(?User $manager): self
+    {
+        $this->manager = $manager;
 
         return $this;
     }
